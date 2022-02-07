@@ -1,0 +1,94 @@
+.issueMeta {
+    width: 100%;
+    display: flex;
+    margin-bottom: 20px;
+}
+.issueMetaItem {
+    margin-right: 10px;
+}
+.descBody {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.peopleBody {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.peopleBodyItem {
+    margin-right: 20px;
+    display: flex;
+    margin-bottom: 10px;
+}
+.peopleBodyItem img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.attachmentHeading {
+    width: 100%;
+    font-size: 25px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    margin-top:20px;
+}
+.attachmentBody{
+    width: 100%;
+    display: flex;
+    margin-bottom: 20px;
+}
+.attachmentItem {
+    width: 100px;
+    height: 100px;
+    background: #eee;
+    border-radius: 7px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.commentsHeading {
+    width: 100%;
+    font-size: 25px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    margin-top:20px;
+}
+.commentsBody {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.commentsBodyItem {
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #e5e5e5;
+    padding: 10px;
+    border-radius: 7px;
+}
+.commentsBodyItemUser {
+    margin-right: 20px;
+    display: flex;
+    margin-bottom: 0px;
+    font-weight: 500;
+}
+.commentsBodyItemUser img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.commentsBodyItemDateTime {
+    font-size: 12px;
+    font-weight: 400;
+    color: #999;
+    position: relative;
+    left: 40px;
+    top: -7px;
+}
+.commentsBodyItemText {
+    padding-left: 42px;
+}
+.commentsBodyInput {
+
+}
+.commentsBodyInput button {
+    float: right;
+}

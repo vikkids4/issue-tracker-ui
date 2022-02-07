@@ -1,0 +1,27 @@
+.projectMeta {
+    width: 100%;
+    display: flex;
+    margin-bottom: 20px;
+}
+.projectMetaItem {
+    margin-right: 10px;
+}
+.descBody {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.peopleBody {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.peopleBodyItem {
+    margin-right: 20px;
+    display: flex;
+    margin-bottom: 10px;
+}
+.peopleBodyItem img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}

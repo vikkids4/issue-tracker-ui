@@ -1,0 +1,17 @@
+/* Background colors */
+.primary-bg {
+    /*background: #34113F;*/
+}
+.secondary-bg {
+    /*background: #f1f1f1;*/
+    background: rgb(63,9,69);
+    background: linear-gradient(306deg, rgb(63, 9, 69) 0%, rgba(68,2,74,0.9864146342130602) 27%, rgb(99, 4, 59) 100%);
+}
+
+/* Font colors */
+.primary-font-clr {
+    color: #444;
+}
+.secondary-font-clr {
+    color: #777;
+}
