@@ -52,7 +52,7 @@ const Invoices = () => {
                     <div className={`myCard p25`}>
                         <div  className={`my_h1`}>Invoice #1</div>
                         <div className={`my_h2`}>Issue Details</div>
-                        <div className={}></div>
+                        {/*<div className={}></div>*/}
                         <Row>
                             <Col sm={4}>Priority</Col>
                             <Col sm={4}>Level 1</Col>
