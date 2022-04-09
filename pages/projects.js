@@ -1,10 +1,6 @@
 import React, { useState } from 'react'
-// import Styles from '../styles/Issues.module.css'
 import Styles from '../styles/Projects.module.css'
-import {Badge, Col, FormGroup, Input, Row, Table, Button, ModalHeader, ModalBody, ModalFooter, Modal} from "reactstrap";
-import userIcon from '../img/default-user-logo.jpg';
-import CreateProjectModal from "../components/CreateProjectModal";
-import $ from 'jquery';
+import {Badge, Col, Row} from "reactstrap";
 import {ProjectDetailsCard} from "../components/ProjectDetailsCard";
 import {CreateProjectForm} from "../components/CreateProjectForm";
 
