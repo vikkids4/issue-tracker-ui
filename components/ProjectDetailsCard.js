@@ -1,18 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 // import Styles from '../styles/Issues.module.css'
 import Styles from '../styles/Projects.module.css'
 import {Badge, Col, FormGroup, Input, Row, Table, Button, ModalHeader, ModalBody, ModalFooter, Modal} from "reactstrap";
 import userIcon from '../img/default-user-logo.jpg';
 import CreateProjectModal from "../components/CreateProjectModal";
-import $ from 'jquery';
+import moment from 'moment';
 
-export const ProjectDetailsCard = () => {
+export const ProjectDetailsCard = (props) => {
+
+    const project = props;
+
+    const nDate = (date) => {
+        let a = new Date(date*1000);
+        const b = moment(a).format('YYYY-MM-DD');
+        return b;
+    }
+
     return (
         <div className={`myCard p25`}>
-            <div  className={`my_h1`}>E-Commerce Web Application Development</div>
+            <div  className={`my_h1`}>{project.NAME}</div>
             <div className={Styles.projectMeta}>
                 <div className={Styles.projectMetaItem}><Badge color="warning">Status: Pending</Badge></div>
-                <div className={Styles.projectMetaItem}><Badge color="secondary">Created on: 13-01-2022</Badge></div>
+                <div className={Styles.projectMetaItem}><Badge color="secondary">{nDate(project.CREATED_AT)}</Badge></div>
                 <div className={Styles.projectMetaItem}><Badge color="danger">Active Issues: 5</Badge></div>
             </div>
             <div className={`my_h2`}>Description</div>

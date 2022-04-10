@@ -1,20 +1,35 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Styles from '../styles/Issues.module.css'
 import {Badge, Col, FormGroup, Input, Row} from "reactstrap";
 import userIcon from '../img/default-user-logo.jpg';
+import moment from 'moment';
 
-export const IssueDetailsCard = () => {
+
+export const IssueDetailsCard = (props) => {
+
+    const {selectedIssue,comments} = props;
+
+    useEffect(() => {
+        console.log(selectedIssue, comments);
+    })
+
+    const nDate = (date) => {
+        let a = new Date(date*1000);
+        const b = moment(a).format('YYYY-MM-DD');
+        return b;
+    }
+
     return (
         <div className={`myCard p25`}>
-            <div  className={`my_h1`}>Search is not working</div>
+            <div  className={`my_h1`}>{selectedIssue.TITLE}</div>
             <div className={Styles.issueMeta}>
-                <div className={Styles.issueMetaItem}><Badge color="danger">Type: Bug</Badge></div>
-                <div className={Styles.issueMetaItem}><Badge color="primary">Client: ABC Pvt Ltd</Badge></div>
-                <div className={Styles.issueMetaItem}><Badge color="warning">Status: Pending</Badge></div>
-                <div className={Styles.issueMetaItem}><Badge color="secondary">Created on: 13-01-2022</Badge></div>
+                <div className={Styles.issueMetaItem}><Badge color="danger">Type: {selectedIssue.TYPE}</Badge></div>
+                <div className={Styles.issueMetaItem}><Badge color="primary">Client: {selectedIssue.PROJECT_NAME}</Badge></div>
+                <div className={Styles.issueMetaItem}><Badge color="warning">Status: {selectedIssue.STATUS}</Badge></div>
+                <div className={Styles.issueMetaItem}><Badge color="secondary">Created on: {nDate(selectedIssue.CREATED_AT)}</Badge></div>
             </div>
             <div className={`my_h2`}>Description</div>
-            <div className={Styles.descBody}>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. </div>
+            <div className={Styles.descBody}>{selectedIssue.DESCRIPTION}</div>
             {/*<div className={Styles.peopleHeading}>People</div>*/}
             <div className={Styles.peopleBody}>
                 <Row>
