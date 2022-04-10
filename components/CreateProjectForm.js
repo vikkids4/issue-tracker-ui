@@ -1,18 +1,68 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {Form, FormGroup, Input, Label} from "reactstrap";
+import moment from 'moment';
+import { createAPIEndpoint, ENDPOINTS } from '../pages/api';
 
-export const CreateProjectForm = () => {
+const organization = [
+    {id:0, name:'Select'},
+    {id:1, name:'Google'},
+    {id:2, name:'Tesla'},
+    {id:3, name:'Abc'},
+  ]
+
+export const CreateProjectForm = (props) => {
+    const {values, setValues,  errors, setErrors, handleInputChange, handleDateChange, resetFormControls} = props;
+
+    const [usersList, setUsersList] = useState([]);
+
+    useEffect(() => {
+        createAPIEndpoint(ENDPOINTS.INTERNALUSRES).fetchAll()
+        .then(res => {
+          let usersList = res.data.map(item => ({
+            id : item.ID,
+            name: item.FIRST_NAME
+          }))
+          usersList = [{id:0, name: 'Select'}].concat(usersList);
+          setUsersList(usersList);
+          console.log(usersList)
+        })
+        .catch(err => console.log(err))
+    },[])
+
+    useEffect(() => {
+        console.log(values);
+    })
+
+
+    const submitOrder = e => {
+        e.preventDefault();
+        console.log(values);
+        createAPIEndpoint(ENDPOINTS.PROJECTS).create(values)
+        .then(res => {
+            resetFormControls();
+        })
+        .catch(err => console.log(err));
+    };
+
+    const nDate = (date) => {
+        let a = new Date(date*1000);
+        const b = moment(a).format('YYYY-MM-DD');
+        return b;
+    }
+
     return (
         <div className={`myCard p25`}>
             <div  className={`my_h1`}>Create a project</div>
-            <Form>
+            <Form onSubmit={submitOrder}>
                 <FormGroup>
                     <Label>Title</Label>
                     <Input
                         id="name"
                         name="name"
+                        value={values.name}
                         placeholder="Project Name"
                         type="text"
+                        onChange={handleInputChange}
                     />
                 </FormGroup>
                 <FormGroup>
@@ -23,10 +73,18 @@ export const CreateProjectForm = () => {
                         id="org"
                         name="orgId"
                         type="select"
+                        onChange={handleInputChange}
+                        value={values.orgId}
                     >
-                        <option>Google</option>
-                        <option>Amazon</option>
-                        <option>Tesla</option>
+                        {organization.map(org => (
+                           <option 
+                            key={org.id} 
+                            value={org.id}
+                            >
+                                {org.name}
+                            </option> 
+                        ))
+                        }
                     </Input>
                 </FormGroup>
                 <FormGroup>
@@ -38,6 +96,8 @@ export const CreateProjectForm = () => {
                         name="startDate"
                         placeholder="Start Date"
                         type="date"
+                        onChange={handleDateChange}
+                        value={nDate(values.startDate)}
                     />
                 </FormGroup>
                 <FormGroup>
@@ -49,6 +109,8 @@ export const CreateProjectForm = () => {
                         name="endDate"
                         placeholder="End Date"
                         type="date"
+                        onChange={handleDateChange}
+                        value={nDate(values.endDate)}
                     />
                 </FormGroup>
                 <FormGroup>
@@ -59,15 +121,25 @@ export const CreateProjectForm = () => {
                         id="assignee"
                         name="assigneeId"
                         type="select"
+                        onChange={handleInputChange}
+                        value={values.assigneeId}
                     >
-                        <option>John Doe</option>
+                        {usersList.map(user => (
+                           <option 
+                            key={user.id} 
+                            value={user.id}
+                            >
+                                {user.name}
+                            </option> 
+                        ))
+                        }
                     </Input>
                 </FormGroup>
             </Form>
             <div className={`pageHeaderControls`}>
                 <button
                     className={`myBtn`}
-                    onClick={function noRefCheck(){}}
+                    onClick={submitOrder}
                 >
                     Create
                 </button>
