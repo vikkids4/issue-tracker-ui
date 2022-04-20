@@ -20,26 +20,26 @@ export const ProjectDetailsCard = (props) => {
         <div className={`myCard p25`}>
             <div  className={`my_h1`}>{project.NAME}</div>
             <div className={Styles.projectMeta}>
-                <div className={Styles.projectMetaItem}><Badge color="warning">Status: Pending</Badge></div>
-                <div className={Styles.projectMetaItem}><Badge color="secondary">{nDate(project.CREATED_AT)}</Badge></div>
-                <div className={Styles.projectMetaItem}><Badge color="danger">Active Issues: 5</Badge></div>
+                {/*<div className={Styles.projectMetaItem}><Badge color="warning">Status: Pending</Badge></div>*/}
+                <div className={Styles.projectMetaItem}><Badge color="secondary">{nDate(project.START_DATE) + ' to ' + nDate(project.END_DATE)}</Badge></div>
+                {/*<div className={Styles.projectMetaItem}><Badge color="danger">Active Issues: 5</Badge></div>*/}
             </div>
             <div className={`my_h2`}>Description</div>
-            <div className={Styles.descBody}>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. </div>
+            <div className={Styles.descBody}>{project.DESC}</div>
             <div className={Styles.peopleBody}>
                 <Row>
-                    <Col>
-                        <div className={`my_h3`}>Created By</div>
-                        <div className={Styles.peopleBodyItem}>
-                            <img src={userIcon.src} alt="" />
-                            Vigneshan Seshamany
-                        </div>
-                    </Col>
+                    {/*<Col>*/}
+                    {/*    <div className={`my_h3`}>Created By</div>*/}
+                    {/*    <div className={Styles.peopleBodyItem}>*/}
+                    {/*        <img src={userIcon.src} alt="" />*/}
+                    {/*        Vigneshan Seshamany*/}
+                    {/*    </div>*/}
+                    {/*</Col>*/}
                     <Col>
                         <div className={`my_h3`}>Assignee</div>
                         <div className={Styles.peopleBodyItem}>
                             <img src={userIcon.src} alt="" />
-                            John Doe
+                            {project.ASSIGNEE_USER_NAME}
                         </div>
                     </Col>
                 </Row>

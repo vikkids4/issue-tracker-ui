@@ -14,6 +14,7 @@ export const CreateProjectForm = (props) => {
     const {values, setValues,  errors, setErrors, handleInputChange, handleDateChange, resetFormControls} = props;
 
     const [usersList, setUsersList] = useState([]);
+    const [orgs, setOrgs] = useState([]);
 
     useEffect(() => {
         createAPIEndpoint(ENDPOINTS.INTERNALUSRES).fetchAll()
@@ -24,9 +25,14 @@ export const CreateProjectForm = (props) => {
           }))
           usersList = [{id:0, name: 'Select'}].concat(usersList);
           setUsersList(usersList);
-          console.log(usersList)
         })
         .catch(err => console.log(err))
+
+        createAPIEndpoint(ENDPOINTS.ORGANIZATIONS).fetchAll()
+            .then(res => {
+                setOrgs(res.data);
+            })
+            .catch(err => console.log(err))
     },[])
 
     useEffect(() => {
@@ -34,7 +40,7 @@ export const CreateProjectForm = (props) => {
     })
 
 
-    const submitOrder = e => {
+    const submitProject = e => {
         e.preventDefault();
         console.log(values);
         createAPIEndpoint(ENDPOINTS.PROJECTS).create(values)
@@ -53,7 +59,7 @@ export const CreateProjectForm = (props) => {
     return (
         <div className={`myCard p25`}>
             <div  className={`my_h1`}>Create a project</div>
-            <Form onSubmit={submitOrder}>
+            <Form onSubmit={submitProject}>
                 <FormGroup>
                     <Label>Title</Label>
                     <Input
@@ -62,6 +68,17 @@ export const CreateProjectForm = (props) => {
                         value={values.name}
                         placeholder="Project Name"
                         type="text"
+                        onChange={handleInputChange}
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label>Project Description</Label>
+                    <Input
+                        id="desc"
+                        name="desc"
+                        value={values.desc}
+                        placeholder="Project Description"
+                        type="textarea"
                         onChange={handleInputChange}
                     />
                 </FormGroup>
@@ -76,13 +93,13 @@ export const CreateProjectForm = (props) => {
                         onChange={handleInputChange}
                         value={values.orgId}
                     >
-                        {organization.map(org => (
-                           <option 
-                            key={org.id} 
-                            value={org.id}
+                        {orgs.map(org => (
+                           <option
+                            key={org.ID}
+                            value={org.ID}
                             >
-                                {org.name}
-                            </option> 
+                                {org.NAME}
+                            </option>
                         ))
                         }
                     </Input>
@@ -125,12 +142,12 @@ export const CreateProjectForm = (props) => {
                         value={values.assigneeId}
                     >
                         {usersList.map(user => (
-                           <option 
-                            key={user.id} 
+                           <option
+                            key={user.id}
                             value={user.id}
                             >
                                 {user.name}
-                            </option> 
+                            </option>
                         ))
                         }
                     </Input>
@@ -139,7 +156,7 @@ export const CreateProjectForm = (props) => {
             <div className={`pageHeaderControls`}>
                 <button
                     className={`myBtn`}
-                    onClick={submitOrder}
+                    onClick={submitProject}
                 >
                     Create
                 </button>

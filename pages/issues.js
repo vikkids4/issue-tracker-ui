@@ -7,13 +7,15 @@ import {ProjectDetailsCard} from "../components/ProjectDetailsCard";
 import {CreateProjectForm} from "../components/CreateProjectForm";
 import { createAPIEndpoint, ENDPOINTS } from './api';
 import { useForm } from '../hooks/useForm';
+import {getOrgId, getUserType} from "../helpers/tokenHelper";
 
 const getFreshModelObject = () => ({
     title: "",
     description: "",
     typeId: 0,
     statusId: 0,
-    projectId: 0
+    projectId: 0,
+    priority: ""
 })
 
 const Issues = () => {
@@ -33,25 +35,48 @@ const Issues = () => {
 	} = useForm(getFreshModelObject)
 
     useEffect(() => {
-        createAPIEndpoint(ENDPOINTS.ISSUES).fetchAll()
-        .then(res => {
-          setIssues(res.data);
-          console.log(res.data);
-        })
-        .catch(err => console.log(err));
+        let orgId = getOrgId()
+        let userType = getUserType()
+
+        if (userType === 'CLIENT') {
+            createAPIEndpoint(ENDPOINTS.ISSUES).fetchById('orgId', orgId)
+                .then(res => {
+                    setIssues(res.data);
+                    // setSelectedIssue(res.data[0]);
+                    // console.log('Selected issue');
+                    // console.log(res);
+                    if (issues.length > 0) {
+                        setSelectedIssue(res.data[0]);
+                    }
+                })
+                .catch(err => console.log(err));
+        } else {
+            createAPIEndpoint(ENDPOINTS.ISSUES).fetchAll()
+                .then(res => {
+                    setIssues(res.data);
+                    if (issues.length > 0) {
+                        setSelectedIssue(res.data[0]);
+                    }
+                    // setSelectedIssue(res.data[0]);
+                    // console.log(res.data);
+                })
+                .catch(err => console.log(err));
+        }
     }, []);
 
-    // useEffect(() => {
-    //     createAPIEndpoint(ENDPOINTS.COMMENTS).fetchById(selectedIssue.ID)
-    //     .then(res => {
-    //       setComments(res.data);
-    //       console.log(res.data);
-    //     })
-    //     .catch(err => console.log(err));
-    // }, []);
+
 
     function toggleProjectForm(e) {
         setShowForm(!showForm)
+    }
+
+    function loadComments() {
+        createAPIEndpoint(ENDPOINTS.COMMENTS).fetchById('issueId', selectedIssue.ID)
+            .then(res => {
+                setComments(res.data);
+                console.log(res.data);
+            })
+            .catch(err => console.log(err));
     }
 
     return (
@@ -87,15 +112,24 @@ const Issues = () => {
                             <tbody>
                             {issues.map((item,index) => {
                                 return (
-                                <tr 
+                                <tr
                                     key={index}
                                     onClick={() => {
                                         setSelectedIssue(item);
+                                        loadComments(item.ID);
                                     }}
                                 >
                                     <th scope="row">{item.ID}</th>
-                                    <td><Badge color="danger">{item.TYPE}</Badge></td>
-                                    <td><Badge color="warning">L1</Badge></td>
+                                    <td>
+                                        <Badge color={`${item.TYPE === 'BUG' ? "danger" : ""}${item.TYPE === 'FEATURE_REQUIREMENT' ? "primary" : ""}`}>
+                                            {item.TYPE}
+                                        </Badge>
+                                    </td>
+                                    <td>
+                                        <Badge color={`${item.PRIORITY === 'L1' ? "danger" : ""}${item.PRIORITY === 'L2' ? "warning" : ""}${item.PRIORITY === "L3" ? "dark" : ""}`}>
+                                            {item.PRIORITY}
+                                        </Badge>
+                                    </td>
                                     <td>{item.STATUS}</td>
                                     <td>{item.PROJECT_NAME}</td>
                                     <td>ABC Pvt Ltd</td>
@@ -153,12 +187,12 @@ const Issues = () => {
                 </Col>
                 <Col lg={5}>
                     {!showForm &&
-                        <IssueDetailsCard 
+                        <IssueDetailsCard
                             {...{ selectedIssue, comments}}
                         />
                     }
                     {showForm &&
-                        <CreateIssueForm 
+                        <CreateIssueForm
                             {...{values, setValues, errors, setErrors, handleInputChange, handleDateChange, resetFormControls }}
                         />
                     }

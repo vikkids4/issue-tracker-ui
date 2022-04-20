@@ -1,1 +1,6 @@
-
+.paymentButton {
+    width:100%;
+    color: #fff;
+    background:  green;
+    border: none;
+}

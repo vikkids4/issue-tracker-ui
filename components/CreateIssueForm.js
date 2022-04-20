@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import {Form, FormGroup, Input, Label} from "reactstrap";
 import { createAPIEndpoint, ENDPOINTS } from '../pages/api';
+import {getOrgId, getUserType} from "../helpers/tokenHelper";
 
 export const CreateIssueForm = (props) => {
     const {values, setValues,  errors, setErrors, handleInputChange, handleDateChange, resetFormControls} = props;
@@ -8,6 +9,9 @@ export const CreateIssueForm = (props) => {
     const [issueTypeList, setIssueTypeList] = useState([]);
     const [issueStatusList, setIssueStatusList] = useState([]);
     const [projectList, setProjectList] = useState([]);
+
+    let userType = getUserType()
+    let orgId = getOrgId()
 
     useEffect(() => {
         createAPIEndpoint(ENDPOINTS.ISSUETYPES).fetchAll()
@@ -49,11 +53,37 @@ export const CreateIssueForm = (props) => {
           console.log(projectList)
         })
         .catch(err => console.log(err))
+
+        if (userType === 'INTERNAL') {
+            createAPIEndpoint(ENDPOINTS.PROJECTS).fetchAll()
+                .then(res => {
+                    let projectList = res.data.map(item => ({
+                        id : item.ID,
+                        name: item.NAME
+                    }))
+                    projectList = [{id:0, name: 'Select'}].concat(projectList);
+                    setProjectList(projectList);
+                })
+                .catch(err => console.log(err));
+        } else {
+            createAPIEndpoint(ENDPOINTS.PROJECTS).fetchById('orgId', orgId)
+                .then(res => {
+                    let projectList = res.data.map(item => ({
+                        id : item.ID,
+                        name: item.NAME
+                    }))
+                    projectList = [{id:0, name: 'Select'}].concat(projectList);
+                    setProjectList(projectList);
+                })
+                .catch(err => console.log(err));
+        }
     },[])
+
 
     const submitOrder = e => {
         e.preventDefault();
         console.log(values);
+        values['statusId'] = 1
         createAPIEndpoint(ENDPOINTS.ISSUES).create(values)
         .then(res => {
             resetFormControls();
@@ -111,28 +141,44 @@ export const CreateIssueForm = (props) => {
                     </Input>
                 </FormGroup>
                 <FormGroup>
-                    <Label for="type">
-                        Status
+                    <Label for="priority">
+                        Priority
                     </Label>
                     <Input
-                        id="status"
-                        name="statusId"
+                        id="priority"
+                        name="priority"
                         type="select"
                         onChange={handleInputChange}
-                        value={values.statusId}
+                        value={values.priority}
                     >
-                        {issueStatusList.map(item => (
-                            <option
-                                key={item.id}
-                                value={item.id}
-                            >
-                                {item.status}
-                            </option>
-                        ))
-
-                        }
+                            <option key='1' value='L1'>L1</option>
+                            <option key='2' value='L2'>L2</option>
+                            <option key='3' value='L3'>L3</option>
                     </Input>
                 </FormGroup>
+                {/*<FormGroup>*/}
+                {/*    <Label for="type">*/}
+                {/*        Status*/}
+                {/*    </Label>*/}
+                {/*    <Input*/}
+                {/*        id="status"*/}
+                {/*        name="statusId"*/}
+                {/*        type="select"*/}
+                {/*        onChange={handleInputChange}*/}
+                {/*        value={values.statusId}*/}
+                {/*    >*/}
+                {/*        {issueStatusList.map(item => (*/}
+                {/*            <option*/}
+                {/*                key={item.id}*/}
+                {/*                value={item.id}*/}
+                {/*            >*/}
+                {/*                {item.status}*/}
+                {/*            </option>*/}
+                {/*        ))*/}
+
+                {/*        }*/}
+                {/*    </Input>*/}
+                {/*</FormGroup>*/}
                 <FormGroup>
                     <Label for="project">
                         Project

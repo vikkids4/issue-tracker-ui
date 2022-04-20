@@ -2,9 +2,11 @@
     width: 100%;
     display: flex;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 .issueMetaItem {
     margin-right: 10px;
+    margin-bottom: 10px;
 }
 .descBody {
     width: 100%;
